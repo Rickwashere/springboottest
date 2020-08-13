@@ -12,10 +12,13 @@ public class CustomerService {
 
     private static Map<Long, Customer> customerRepo = new HashMap<>();
     static {
+        /*
         Customer c1 = new Customer(1L,"Rick", "M");
         customerRepo.put(1L,c1);
         Customer c2 = new Customer(2L,"Sam", "M");
         customerRepo.put(2L,c2);
+
+         */
     }
 
     public Customer createCustomer(Customer customer) {

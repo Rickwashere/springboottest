@@ -26,8 +26,11 @@ public class CustomerController {
     CustomerRepositoryService customerRepositoryService;
     
     @RequestMapping(value = "/customers", method = GET)
-    public ResponseEntity<Object> getCustomerList() {
-        return new ResponseEntity<>(customerRepositoryService.getCustomerList(), HttpStatus.OK);
+    public ResponseEntity<Object> getCustomerList(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return new ResponseEntity<>(customerRepositoryService.getCustomerList(pageNo, pageSize, sortBy ), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customers/{id}", method = GET)

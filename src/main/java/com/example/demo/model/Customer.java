@@ -44,7 +44,16 @@ public class Customer extends Auditable<String> {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY
     )
+
     private List<Address> addressList = new ArrayList<>();
+
+    //Contact
+    @OneToMany(
+            mappedBy = "customer",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY
+    )
+    private List<Contact> contactList =  new ArrayList<>();
 
     public CreditScore getCreditScore() {
         return creditScore;
@@ -67,8 +76,16 @@ public class Customer extends Auditable<String> {
     }
 
 
+    public List<Contact> getContactList() {
+        return contactList;
+    }
 
-
+    public void setContactList(List<Contact> contactList) {
+        this.contactList = contactList;
+        for (Contact c : contactList) {
+            c.setCustomer(this);
+        }
+    }
 
     public Customer() {
     }

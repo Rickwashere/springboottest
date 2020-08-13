@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.model.Address;
+import com.example.demo.model.Contact;
 import com.example.demo.model.CreditScore;
 import com.example.demo.model.Customer;
 import com.example.demo.repository.CustomerRepository;
@@ -20,6 +21,23 @@ public class DatabaseLoader {
     @Bean
     CommandLineRunner initDatabase(CustomerRepository repository){
         return args -> {
+            //Create Contact Info
+            Contact con1 = new Contact();
+            con1.setType("email");
+
+            Contact con2 = new Contact();
+            con2.setType("phone");
+
+            Contact con3 = new Contact();
+            con3.setType("fax");
+
+            //Create Contact list and add Contact
+            List<Contact> conList1 = new ArrayList<>();
+            conList1.add(con1);
+            List<Contact> conList2 = new ArrayList<>();
+            conList2.add(con2);
+            conList2.add(con3);
+
             //Create Credit Scores
             CreditScore cs1 = new CreditScore();
             cs1.setProviderName("provider1");
@@ -58,12 +76,16 @@ public class DatabaseLoader {
             c1.setGender("M");
             c1.setCreditScore(cs1);
             c1.setAddressList(addList);
+            c1.setContactList(conList1);
+
+
 
             Customer c2 = new Customer();
             c2.setName("sam");
             c2.setGender("M");
             c2.setCreditScore(cs2);
             c2.setAddressList(addList2);
+            c2.setContactList(conList2);
 
 
 

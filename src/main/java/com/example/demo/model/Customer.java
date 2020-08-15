@@ -41,7 +41,7 @@ public class Customer extends Auditable<String> {
     // Address
     @OneToMany(
             mappedBy = "customer",
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
 
@@ -50,7 +50,7 @@ public class Customer extends Auditable<String> {
     //Contact
     @OneToMany(
             mappedBy = "customer",
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     private List<Contact> contactList =  new ArrayList<>();

@@ -26,10 +26,11 @@ public class CustomerRepositoryService {
     }
 
     public Customer updateCustomer(Customer customer) {
-        Customer temp= customerRepository.findById(customer.getId()).get();
+       /* Customer temp= customerRepository.findById(customer.getId()).get();
         temp.setName(customer.getName());
-        temp.setGender(customer.getGender());
-        return customerRepository.save(temp);
+        temp.setGender(customer.getGender());*/
+       int i = 5;
+        return customerRepository.save(customer);
     }
 
     public void deleteCustomer(Customer customer) {
@@ -62,6 +63,9 @@ public class CustomerRepositoryService {
         * if no pagination
         * return customerRepository.findAll();
         * */
+
+    }
+    private void  deepcopyCustomerOriginal(){
 
     }
 }

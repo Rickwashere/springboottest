@@ -4,6 +4,8 @@ import com.example.demo.model.Address;
 import com.example.demo.model.Contact;
 import com.example.demo.model.CreditScore;
 import com.example.demo.model.Customer;
+import com.example.demo.model.Email;
+import com.example.demo.model.Telephone;
 import com.example.demo.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,21 +24,80 @@ public class DatabaseLoader {
     CommandLineRunner initDatabase(CustomerRepository repository){
         return args -> {
             //Create Contact Info
-            Contact con1 = new Contact();
-            con1.setType("email");
+            //Create Emails and phone numbers
+            Email e1 = new Email();
+            Email e2 = new Email();
 
-            Contact con2 = new Contact();
-            con2.setType("phone");
+            e1.setEmailAddress("rick@gmail.com");
+            e1.setPreference("Primary");
 
-            Contact con3 = new Contact();
-            con3.setType("fax");
+            e2.setEmailAddress("sam@gmail.com");
+            e2.setPreference("Secondary");
+
+            Telephone phone1 = new Telephone();
+            Telephone phone2 = new Telephone();
+
+            phone1.setPhoneType("cell");
+            phone1.setPhone("720-242-6632");
+            phone1.setPreferences("Primary");
+
+            phone2.setPhoneType("work");
+            phone2.setPhone("720-536-6562");
+            phone2.setPreferences("Secondary");
+
+            //data for con 2
+            Email e3 = new Email();
+            Email e4 = new Email();
+
+            e3.setEmailAddress("rick2g@gmail.com");
+            e3.setPreference("Primary");
+
+            e4.setEmailAddress("sam22@gmail.com");
+            e4.setPreference("Secondary");
+
+            Telephone phone3 = new Telephone();
+            Telephone phone4 = new Telephone();
+
+            phone3.setPhoneType("cell");
+            phone3.setPhone("720-642-3432");
+            phone3.setPreferences("Primary");
+
+            phone4.setPhoneType("work");
+            phone4.setPhone("720-323-6098");
+            phone4.setPreferences("Secondary");
+
 
             //Create Contact list and add Contact
+            Contact con1 = new Contact(); //contact 1
+
+            List<Email> mailList1 = new ArrayList<>();
+            mailList1.add(e1);
+            mailList1.add(e2);
+            con1.setEmailList(mailList1);
+
+            List<Telephone> phoneList = new ArrayList<>();
+            phoneList.add(phone1);
+            phoneList.add(phone2);
+            con1.setPhoneList(phoneList);
+
             List<Contact> conList1 = new ArrayList<>();
             conList1.add(con1);
+
+            Contact con2 = new Contact();
+
+            List<Email> mailList2 = new ArrayList<>();
+            mailList2.add(e3);
+            mailList2.add(e4);
+            con2.setEmailList(mailList2);
+
+            List<Telephone> phoneList2 = new ArrayList<>();
+            phoneList2.add(phone3);
+            phoneList2.add(phone4);
+            con2.setPhoneList(phoneList2);
+
             List<Contact> conList2 = new ArrayList<>();
             conList2.add(con2);
-            conList2.add(con3);
+
 
             //Create Credit Scores
             CreditScore cs1 = new CreditScore();
@@ -76,6 +137,7 @@ public class DatabaseLoader {
             c1.setGender("M");
             c1.setCreditScore(cs1);
             c1.setAddressList(addList);
+
             c1.setContactList(conList1);
 
 
@@ -91,8 +153,6 @@ public class DatabaseLoader {
 
             log.info("loading data "+ repository.save( c1));
             log.info("loading data "+ repository.save (c2));
-
-
 
         };
     }

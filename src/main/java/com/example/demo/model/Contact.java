@@ -28,8 +28,6 @@ public class Contact {
     private @Id
     @GeneratedValue
     Long id;
-    @Column(name="contact_type", nullable=false)
-    private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
@@ -37,7 +35,7 @@ public class Contact {
     //Phone
     @OneToMany(
             mappedBy = "contact",
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
 
@@ -46,7 +44,7 @@ public class Contact {
     //Email
     @OneToMany(
             mappedBy = "contact",
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
 
@@ -85,14 +83,6 @@ public class Contact {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -107,12 +97,11 @@ public class Contact {
         if (!(o instanceof Contact)) return false;
         Contact contact = (Contact) o;
         return getId().equals(contact.getId()) &&
-                getType().equals(contact.getType()) &&
                 getCustomer().equals(contact.getCustomer());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getType(), getCustomer());
+        return Objects.hash(getId(), getCustomer());
     }
 }

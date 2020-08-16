@@ -1,8 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
@@ -13,14 +10,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 
 @Entity
@@ -85,6 +82,23 @@ public class Customer extends Auditable<String> {
         for (Contact c : contactList) {
             c.setCustomer(this);
         }
+    }
+
+    //Events
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "Customer_SocialMedia",
+            joinColumns = {@JoinColumn(name = "customer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "SocialMedia_id")}
+    )
+    private List<SocialMedia> socialMediaList = new ArrayList<>();
+
+    public List<SocialMedia> getSocialMediaList() {
+        return socialMediaList;
+    }
+
+    public void setSocialMediaList(List<SocialMedia> events) {
+        this.socialMediaList = events;
     }
 
     public Customer() {

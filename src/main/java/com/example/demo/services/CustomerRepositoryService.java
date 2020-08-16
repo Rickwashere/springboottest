@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -19,20 +20,15 @@ public class CustomerRepositoryService {
     @Autowired
     CustomerRepository customerRepository;
 
-
-    public Optional<Customer> createCustomer(Customer customer) {
-        customerRepository.save(customer);
-        return customerRepository.findById(customer.getId());
-    }
-
-    public Customer updateCustomer(Customer customer) {
-       /* Customer temp= customerRepository.findById(customer.getId()).get();
-        temp.setName(customer.getName());
-        temp.setGender(customer.getGender());*/
-       int i = 5;
+    @Transactional
+    public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
-
+    @Transactional
+    public Customer updateCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+    @Transactional
     public void deleteCustomer(Customer customer) {
         customerRepository.delete(customer);
     }

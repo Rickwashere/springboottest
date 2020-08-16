@@ -5,6 +5,7 @@ import com.example.demo.model.Contact;
 import com.example.demo.model.CreditScore;
 import com.example.demo.model.Customer;
 import com.example.demo.model.Email;
+import com.example.demo.model.SocialMedia;
 import com.example.demo.model.Telephone;
 import com.example.demo.repository.CustomerRepository;
 import org.slf4j.Logger;
@@ -23,6 +24,22 @@ public class DatabaseLoader {
     @Bean
     CommandLineRunner initDatabase(CustomerRepository repository){
         return args -> {
+            //Create Event
+            SocialMedia sm1 = new SocialMedia();
+            SocialMedia sm2 = new SocialMedia();
+
+            sm1.setSocialMediaName("Facebook");
+            sm2.setSocialMediaName("Twitter");
+
+            List<SocialMedia> smlist = new ArrayList<>();
+            smlist.add(sm1);
+            smlist.add(sm2);
+
+            List<SocialMedia> smlist2 = new ArrayList<>();
+            smlist2.add(sm2);
+
+
+
             //Create Contact Info
             //Create Emails and phone numbers
             Email e1 = new Email();
@@ -139,6 +156,7 @@ public class DatabaseLoader {
             c1.setAddressList(addList);
 
             c1.setContactList(conList1);
+            c1.setSocialMediaList(smlist);
 
 
 
@@ -148,6 +166,7 @@ public class DatabaseLoader {
             c2.setCreditScore(cs2);
             c2.setAddressList(addList2);
             c2.setContactList(conList2);
+            c2.setSocialMediaList(smlist2);
 
 
 

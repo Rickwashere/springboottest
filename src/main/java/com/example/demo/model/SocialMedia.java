@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="SocialMedia")
-@JsonIgnoreProperties({ "customer"})
+@JsonIgnoreProperties({ "customers"})
 public class SocialMedia {
     private @Id
     @GeneratedValue

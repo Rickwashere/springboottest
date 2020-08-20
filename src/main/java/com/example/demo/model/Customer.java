@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
@@ -23,6 +24,7 @@ import java.util.Objects;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="Customer_table")
+@DynamicUpdate
 //@JsonIgnoreProperties({  "creditScore"})
 
 public class Customer extends Auditable<String> {
@@ -97,8 +99,23 @@ public class Customer extends Auditable<String> {
         return socialMediaList;
     }
 
-    public void setSocialMediaList(List<SocialMedia> events) {
-        this.socialMediaList = events;
+    public void setSocialMediaList(List<SocialMedia> sm) {
+        this.socialMediaList = sm;
+    }
+
+    @OneToMany(mappedBy = "customer",
+            cascade = CascadeType.ALL)
+    private List<CustomerEvent> customerSideEventList;
+
+    public List<CustomerEvent> getCustomerSideEventList() {
+        return customerSideEventList;
+    }
+
+    public void setCustomerSideEventList(List<CustomerEvent> customerSideEventList) {
+        this.customerSideEventList = customerSideEventList;
+        for(CustomerEvent ce: customerSideEventList){
+            ce.setCustomer(this);
+        }
     }
 
     public Customer() {

@@ -4,7 +4,9 @@ import com.example.demo.model.Address;
 import com.example.demo.model.Contact;
 import com.example.demo.model.CreditScore;
 import com.example.demo.model.Customer;
+import com.example.demo.model.CustomerEvent;
 import com.example.demo.model.Email;
+import com.example.demo.model.Event;
 import com.example.demo.model.SocialMedia;
 import com.example.demo.model.Telephone;
 import com.example.demo.repository.CustomerRepository;
@@ -14,6 +16,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,19 +30,41 @@ public class DatabaseLoader {
     @Bean
     CommandLineRunner initDatabase(CustomerRepository repository){
         return args -> {
+
             //Create Event
+            Event eve1 = new Event();
+            Event eve2 = new Event();
+            Event eve3 = new Event();
+
+            eve1.setEventType("Appointment");
+            eve1.setDescription("outside appointment");
+
+            eve2.setEventType("Dinner");
+            eve2.setDescription("cafeteria free steak");
+
+            eve3.setEventType("Party");
+            eve3.setDescription("Formal attire not required");
+
+            List<Event> eventList= new ArrayList<>();
+            eventList.add(eve1);
+            eventList.add(eve2);
+
+            //Create Social Media
             SocialMedia sm1 = new SocialMedia();
             SocialMedia sm2 = new SocialMedia();
+            SocialMedia sm3 = new SocialMedia();
 
             sm1.setSocialMediaName("Facebook");
             sm2.setSocialMediaName("Twitter");
+            sm3.setSocialMediaName("Instagram");
 
             List<SocialMedia> smlist = new ArrayList<>();
             smlist.add(sm1);
-            smlist.add(sm2);
+
 
             List<SocialMedia> smlist2 = new ArrayList<>();
             smlist2.add(sm2);
+            smlist2.add(sm3);
 
 
 
@@ -148,6 +176,8 @@ public class DatabaseLoader {
             List<Address> addList2 = new ArrayList<>();
             addList2.add(ad3);
 
+
+
             //Create Customers
             Customer c1 = new Customer();
             c1.setName("rick");
@@ -160,6 +190,7 @@ public class DatabaseLoader {
 
 
 
+
             Customer c2 = new Customer();
             c2.setName("sam");
             c2.setGender("M");
@@ -168,10 +199,45 @@ public class DatabaseLoader {
             c2.setContactList(conList2);
             c2.setSocialMediaList(smlist2);
 
+            //Time
+            LocalDateTime localDateTime = LocalDateTime.now();
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
+
+
+            //Create customer event
+            CustomerEvent ce= new CustomerEvent();
+            //ce.setEvent(eve1);
+           // ce.setCustomer(c1);
+            //ce.setEventTime(zonedDateTime);
+            ce.setStatus("Scheduled");
+
+            CustomerEvent ce2= new CustomerEvent();
+         //   ce2.setEvent(eve2);
+          //  ce2.setCustomer(c2);
+            //ce2.setEventTime(zonedDateTime);
+            ce2.setStatus("Scheduled");
+
+
+
+            List<CustomerEvent> ceList= new ArrayList<>();
+          //  ceList.add(ce);
+
+            List<CustomerEvent> ceList2= new ArrayList<>();
+          // ceList2.add(ce2);
+
+
+
+            //eve1.setEventSideEventList(ceList);
+            c1.setCustomerSideEventList(ceList);
+
+            //eve2.setEventSideEventList(ceList2);
+            c2.setCustomerSideEventList(ceList2);
 
 
             log.info("loading data "+ repository.save( c1));
             log.info("loading data "+ repository.save (c2));
+
+
 
         };
     }

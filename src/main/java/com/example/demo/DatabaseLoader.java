@@ -10,6 +10,7 @@ import com.example.demo.model.Event;
 import com.example.demo.model.SocialMedia;
 import com.example.demo.model.Telephone;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +29,7 @@ public class DatabaseLoader {
     private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
     @Bean
-    CommandLineRunner initDatabase(CustomerRepository repository){
+    CommandLineRunner initDatabase(CustomerRepository repository, EventRepository ER){
         return args -> {
 
             //Create Event
@@ -206,24 +207,24 @@ public class DatabaseLoader {
 
             //Create customer event
             CustomerEvent ce= new CustomerEvent();
-            //ce.setEvent(eve1);
-           // ce.setCustomer(c1);
+            ce.setEvent(eve1);
+            ce.setCustomer(c1);
             //ce.setEventTime(zonedDateTime);
             ce.setStatus("Scheduled");
 
             CustomerEvent ce2= new CustomerEvent();
-         //   ce2.setEvent(eve2);
-          //  ce2.setCustomer(c2);
+            ce2.setEvent(eve2);
+            ce2.setCustomer(c2);
             //ce2.setEventTime(zonedDateTime);
             ce2.setStatus("Scheduled");
 
 
 
             List<CustomerEvent> ceList= new ArrayList<>();
-          //  ceList.add(ce);
+            ceList.add(ce);
 
             List<CustomerEvent> ceList2= new ArrayList<>();
-          // ceList2.add(ce2);
+           ceList2.add(ce2);
 
 
 
@@ -233,7 +234,8 @@ public class DatabaseLoader {
             //eve2.setEventSideEventList(ceList2);
             c2.setCustomerSideEventList(ceList2);
 
-
+            log.info("loading data "+ ER.save(eve1));
+            log.info("loading data "+ ER.save(eve2));
             log.info("loading data "+ repository.save( c1));
             log.info("loading data "+ repository.save (c2));
 

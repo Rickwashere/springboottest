@@ -14,13 +14,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .anyRequest().fullyAuthenticated()
+                //.anyRequest().
+                .antMatchers("/hello").fullyAuthenticated()
+                .antMatchers("/home").fullyAuthenticated()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/").permitAll()
                 .and()
                 .formLogin().loginPage("/login")
+
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll();
+
+        http.formLogin().defaultSuccessUrl("/home", true);
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Override

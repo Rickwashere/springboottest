@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.dto.CustomerDto;
 import com.example.demo.model.Address;
 import com.example.demo.model.Contact;
 import com.example.demo.model.CreditScore;
@@ -9,6 +10,7 @@ import com.example.demo.model.Email;
 import com.example.demo.model.Event;
 import com.example.demo.model.SocialMedia;
 import com.example.demo.model.Telephone;
+import com.example.demo.repository.CustomerQueryRepository;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.EventRepository;
 import org.slf4j.Logger;
@@ -17,7 +19,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,7 +30,7 @@ public class DatabaseLoader {
     private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
     @Bean
-    CommandLineRunner initDatabase(CustomerRepository repository, EventRepository ER){
+    CommandLineRunner initDatabase(CustomerRepository repository, EventRepository ER, CustomerQueryRepository cqr){
         return args -> {
 
             //Create Event
@@ -159,16 +160,19 @@ public class DatabaseLoader {
             ad1.setAddressLine1("8822 chestnut");
             ad1.setState("CO");
             ad1.setZipcode("23457");
+            ad1.setAddressType("Primary");
 
             Address ad2 = new Address();
             ad2.setAddressLine1("8823 chestnut");
             ad2.setState("CO");
             ad2.setZipcode("23458");
+            ad2.setAddressType("Vacation");
 
             Address ad3 = new Address();
             ad3.setAddressLine1("8422 chestnut");
             ad3.setState("CO");
             ad3.setZipcode("23857");
+            ad3.setAddressType("Primary");
 
             // Create a list and add addresses in the list
             List<Address> addList = new ArrayList<>();
@@ -176,8 +180,6 @@ public class DatabaseLoader {
             addList.add(ad2);
             List<Address> addList2 = new ArrayList<>();
             addList2.add(ad3);
-
-
 
             //Create Customers
             Customer c1 = new Customer();
@@ -204,16 +206,23 @@ public class DatabaseLoader {
             LocalDateTime localDateTime = LocalDateTime.now();
             ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
 
-
+           // log.info("loading data "+ ER.save(eve1));
+            //log.info("loading data "+ ER.save(eve2));
+            eve1=ER.save(eve1);
+            eve2= ER.save(eve2);
             //Create customer event
             CustomerEvent ce= new CustomerEvent();
-            ce.setEvent(eve1);
+            ce.setEventId(eve1.getId());
+            ce.setEventType(eve1.getEventType());
+            ce.setDescription(eve1.getDescription());
             ce.setCustomer(c1);
             //ce.setEventTime(zonedDateTime);
             ce.setStatus("Scheduled");
 
             CustomerEvent ce2= new CustomerEvent();
-            ce2.setEvent(eve2);
+            ce2.setEventId(eve2.getId());
+            ce2.setEventType(eve1.getEventType());
+            ce2.setDescription(eve1.getDescription());
             ce2.setCustomer(c2);
             //ce2.setEventTime(zonedDateTime);
             ce2.setStatus("Scheduled");
@@ -234,13 +243,24 @@ public class DatabaseLoader {
             //eve2.setEventSideEventList(ceList2);
             c2.setCustomerSideEventList(ceList2);
 
-            log.info("loading data "+ ER.save(eve1));
-            log.info("loading data "+ ER.save(eve2));
+
+
             log.info("loading data "+ repository.save( c1));
-            log.info("loading data "+ repository.save (c2));
+            //log.info("loading data "+ repository.save (c2));
+            Customer temp1 =  repository.save (c2);
 
+            List<CustomerEvent> tempList= temp1.getCustomerSideEventList();
+            for(CustomerEvent customerEvent: tempList){
+                log.info("check status "+ customerEvent.getStatus());
+                customerEvent.setStatus("Cancelled");
+            }
 
-
+            repository.save(temp1);
+            //repository.findCustomerList("Primary","Primary","Primary");
+            List<CustomerDto> ct = cqr.getCustomerContactList();
+            for (CustomerDto c : ct) {
+                log.info("\nCustomer:\n\t" + c.toString());
+            }
         };
     }
 

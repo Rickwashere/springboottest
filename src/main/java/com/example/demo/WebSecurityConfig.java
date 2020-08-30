@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/hello").fullyAuthenticated()
                 .antMatchers("/home").fullyAuthenticated()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/").permitAll()
+                .antMatchers("/").fullyAuthenticated()
                 .and()
                 .formLogin().loginPage("/login")
 
@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
 
-        http.formLogin().defaultSuccessUrl("/home", true);
+        http.formLogin().defaultSuccessUrl("/", true);
 
         http.csrf().disable();
         http.headers().frameOptions().disable();

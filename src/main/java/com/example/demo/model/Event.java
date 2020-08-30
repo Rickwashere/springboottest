@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,9 +33,10 @@ public class Event {
     @Column(name="Event_Description", nullable=false)
     private String description;
 
-    @OneToMany(mappedBy = "event",
-            cascade = CascadeType.ALL)
-    private List<CustomerEvent> eventSideEventList;
+    /*@OneToMany(mappedBy = "event",
+            cascade = CascadeType.ALL)*/
+
+    //private List<CustomerEvent> eventSideEventList;
 
     public Long getId() {
         return id;
@@ -59,16 +62,16 @@ public class Event {
         this.description = description;
     }
 
-    public List<CustomerEvent> getEventSideEventList() {
+   /* public List<CustomerEvent> getEventSideEventList() {
         return eventSideEventList;
-    }
+    }*/
 
-    public void setEventSideEventList(List<CustomerEvent> eventSideEventList) {
+    /*public void setEventSideEventList(List<CustomerEvent> eventSideEventList) {
         this.eventSideEventList = eventSideEventList;
         for(CustomerEvent ce: eventSideEventList){
             ce.setEvent(this);
         }
-    }
+    }*/
 
     public Event() {
     }

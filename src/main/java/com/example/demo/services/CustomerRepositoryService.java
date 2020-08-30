@@ -1,7 +1,12 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.CustomerDto;
 import com.example.demo.model.Customer;
+import com.example.demo.model.CustomerEvent;
+import com.example.demo.model.Event;
+import com.example.demo.repository.CustomerQueryRepository;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +16,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +26,12 @@ public class CustomerRepositoryService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    EventRepository eventRepository;
+
+    @Autowired
+    CustomerQueryRepository queryRepository;
 
     @Transactional
     public Customer createCustomer(Customer customer) {
@@ -33,9 +46,24 @@ public class CustomerRepositoryService {
         customerRepository.delete(customer);
     }
 
-    public Optional<Customer> getCustomer(Long id) {
-        return customerRepository.findById(id);
+    public void deleteCustomerbyid(Long givenId) {
+        Customer customer= customerRepository.findById(givenId).get();
+        customerRepository.delete(customer);
+    }
 
+    public Optional<Customer> getCustomer(Long id) {
+        Optional<Customer> c = customerRepository.findById(id);
+        List<CustomerEvent> eventList= c.get().getCustomerSideEventList();
+        for(CustomerEvent ce: eventList){
+            Event e = eventRepository.findById(ce.getEventId()).get();
+            ce.setEventType(e.getEventType());
+            ce.setDescription(e.getDescription());
+        }
+        return c;
+
+    }
+    public Collection<CustomerDto> customerQueryList(){
+       return queryRepository.getCustomerContactList();
     }
 
     public Collection<Customer> getCustomerList(Integer pno, Integer psze, String order ) {

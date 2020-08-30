@@ -27,10 +27,11 @@ public class Address {
     private String addressLine1;
     @Column(name="state", nullable=false)
     private String state;
-
-
     @Column(name="zipcode", nullable=false)
     private String zipcode;
+    @Column(name="address_type", nullable=false)
+    private String addressType;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
@@ -45,6 +46,14 @@ public class Address {
     }
 
     public Address() {
+    }
+
+    public String getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
     }
 
     public Long getId() {

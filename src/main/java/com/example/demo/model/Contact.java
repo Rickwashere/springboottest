@@ -36,7 +36,8 @@ public class Contact {
     @OneToMany(
             mappedBy = "contact",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
 
     private List<Telephone> phoneList = new ArrayList<>();
@@ -45,7 +46,8 @@ public class Contact {
     @OneToMany(
             mappedBy = "contact",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
 
     private List<Email> emailList = new ArrayList<>();

@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.CustomerDto;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -15,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,18 @@ import java.util.Objects;
 @Table(name="Customer_table")
 @DynamicUpdate
 //@JsonIgnoreProperties({  "creditScore"})
-
+@SqlResultSetMapping(
+        name = "CustomerDtoMapper",
+        classes = @ConstructorResult(
+                targetClass = CustomerDto.class,
+                columns = { @ColumnResult(name = "id", type = Long.class),
+                        @ColumnResult(name = "customerName"),
+                        @ColumnResult(name = "gender"),
+                        @ColumnResult(name = "creditScore"),
+                        @ColumnResult(name = "addressLine1"),
+                        @ColumnResult(name = "emailAddress"),
+                        @ColumnResult(name = "phone")
+                }))
 public class Customer extends Auditable<String> {
 
     private @Id @GeneratedValue Long id;
@@ -41,7 +56,8 @@ public class Customer extends Auditable<String> {
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
 
     private List<Address> addressList = new ArrayList<>();
@@ -50,7 +66,8 @@ public class Customer extends Auditable<String> {
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
     private List<Contact> contactList =  new ArrayList<>();
 

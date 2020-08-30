@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title><!DOCTYPE html>
+            <html xmlns:th="http://www.thymeleaf.org">
+
+            <head>
+                <meta charset="utf-8">
+                <meta http-equiv="x-ua-compatible" content="ie=edge">
+                <title>Add Customer</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+            </head>
+
+    <body>
+    <div class="container my-5">
+        <h3> Add Customer</h3>
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-10">
+                    <form action="#" th:action="@{/createCustomer}" th:object="${customer}"
+                          method="post">
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label for="name" class="col-form-label"> Name</label>
+                                <input type="text" th:field="*{name}" class="form-control"
+                                       id="name" placeholder="Enter Name Here" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="gender" class="col-form-label">Gender</label>
+                                <input type="text" th:field="*{gender}" class="form-control"
+                                       id="gender" placeholder="Enter Gender" />
+                            </div>
+                            <div class="col-md-10">
+                            <h4>Enter Address</h4>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th> Address </th>
+                                    <th> State </th>
+                                    <th> Zipcode </th>
+                                    <th> Preference </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="address, i : *{addressList}">
+                                    <td><input type="text" class="form-control" placeholder="Enter address" th:field="*{addressList[__${i.index}__].addressLine1}"></td>
+                                    <td><input type="text" class="form-control" placeholder="Enter state" th:field="*{addressList[__${i.index}__].state}"></td>
+                                    <td><input type="text" class="form-control" placeholder="Enter zip" th:field="*{addressList[__${i.index}__].zipcode}"></td>
+                                    <td><input type="text" class="form-control" placeholder="Enter preference" th:field="*{addressList[__${i.index}__].addressType}"></td>
+                                    <!-- <td><input type="hidden" th:field="*{workdayCommands[__${i.index}__].employeeId}"/></td>-->
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <br>
+                            <div class="form-group col-md-4">
+                                <label for="credit" class="col-form-label">Credit Score</label>
+                                <input type="text" th:field="*{creditScore.CreditScore}" class="form-control"
+                                       id="credit" placeholder="Enter Credit Score" />
+                            </div>
+
+                             <div class="col-md-10">
+                                 <br>
+                                 <input type="submit" class="btn btn-primary" id = "button" value=" Submit ">
+                             </div>
+
+                             <input type="hidden" id="id" th:field="*{id}">
+
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+        </div>
+    </body>
+
+ </html>
